@@ -33,7 +33,7 @@ if __name__ == '__main__':
     parser.add_argument('-sn', '--neighborhood-size', default=10, type=int, help='Initial neighborhood size in SOM algorithm')
     parser.add_argument('-ds', '--data-size', default=200, type=int, help='Number of data points to include')
     parser.add_argument('-lr', '--learning-rate', default=0.2, type=float, help='Learning rate in SOM algorithm')
-    parser.add_argument('-lu', '--label-unit', default='u2d', type=str, choices=['d2u', 'd2u'],
+    parser.add_argument('-lu', '--label-unit', default='u2d', type=str, choices=['d2u', 'u2d'],
                         help='Method for labeling the units')
     args = parser.parse_args()
 
@@ -62,7 +62,7 @@ if __name__ == '__main__':
     som.train(epochs=args.epochs, start=args.neighborhood_size, learningRate=args.learning_rate)
 
     '''Visualize'''
-    som.plotMap(data, np.arange(len(i2w)), i2w, "word vector", method="u2d")
+    som.plotMap(data, np.arange(len(i2w)), i2w, "word vector", method="u2d", savefile=True)
 
     print("Done")
 

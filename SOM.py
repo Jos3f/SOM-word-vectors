@@ -7,6 +7,7 @@ import time
 import random
 from sklearn.preprocessing import normalize
 from tqdm import tqdm
+from datetime import datetime
 
 
 
@@ -114,7 +115,7 @@ class SOM:
         distances = np.linalg.norm((self.data - self.weights[unit_index]), axis=1)
         return distances.argmin()
 
-    def plotMap(self, mpvotes, labels, label_name, data_point_name, method="d2u"):
+    def plotMap(self, mpvotes, labels, label_name, data_point_name, method="d2u", savefile=True):
         node_labels = self.label_nodes(mpvotes, labels, method)
 
         print("Node labels: ")
@@ -133,6 +134,8 @@ class SOM:
         for row in range(self.map_width):
             print(node_matrix_labels[self.map_width * row:self.map_width * (row + 1)])
 
+        dpi = 200
+        plt.figure(figsize=(300 * self.map_width / dpi, 100 * self.map_width / dpi), dpi=dpi)
         for unit_index in range(self.nUnits):
             if node_matrix_labels[unit_index] != -1:
                 unit_label = node_matrix_labels[unit_index]
@@ -146,13 +149,21 @@ class SOM:
                 # print(y_coord)
                 plt.annotate(label_print, (x_coord, y_coord))
 
+
         plt.xlim((-1, self.map_width))
         plt.ylim((-1, self.map_width))
         plt.title("Topological mapping to {}x{} grid with respect to {}"
                   .format(self.map_width, self.map_width, data_point_name))
         plt.xlabel("Grid x-axis")
         plt.ylabel("Grid y-axis")
-        plt.show()
+
+        if savefile:
+
+            now = datetime.now()
+            now_str = now.strftime("%Y_%m_%d_%H_%M_%S")
+            plt.savefig("results/{}".format(now_str + '.png'), dpi=dpi, bbox_inches='tight')
+        else:
+            plt.show()
 
 
 def main():
