@@ -40,7 +40,8 @@ class SOM:
 
         exponents = np.arange(epochs + 1)
         end_neighborhood = 0.5
-        neighbour_distances = (np.floor(start * ((end_neighborhood/start)**(1/exponents[-1]))**exponents)).astype(int)
+        neighbour_distances = (
+            np.floor(start * ((end_neighborhood / start) ** (1 / exponents[-1])) ** exponents)).astype(int)
 
         '''Start training'''
         for epoch in tqdm(range(len(neighbour_distances))):
@@ -52,7 +53,8 @@ class SOM:
                 winning_unit = self._get_winning_unit(data_index)  # Euclidean distance
 
                 # update winning unit
-                self._unit_weights[winning_unit] += learning_rate * (self._data[data_index] - self._unit_weights[winning_unit])
+                self._unit_weights[winning_unit] += learning_rate * (
+                        self._data[data_index] - self._unit_weights[winning_unit])
 
                 # Find neighbours
                 neighbours = []
@@ -82,7 +84,6 @@ class SOM:
     def label_nodes(self, labels, method="d2u"):
         """
         Label the units with the provided data and their labels
-        :param data: The input data
         :param labels: Label of the data
         :param method: Method for labeling data. 'd2u' will label each unit with a specific label if the unit is
         the closest one to the data point with that specific label. 'u2d' will label each unit to the same label as
@@ -95,7 +96,7 @@ class SOM:
 
         '''Label units'''
         if method == "d2u":
-            for data_index in range(self.data.shape[0]):
+            for data_index in range(self._data.shape[0]):
                 winning_unit = self._get_winning_unit(data_index)
                 unit_labels[winning_unit].append(labels[data_index])
         else:
@@ -131,7 +132,6 @@ class SOM:
         :param data_point_name: Name of the input space
         :param method: Method used when labeling data points. See self.label_nodes for more info.
         :param save_file: Boolean value indicating if we want to save the plotted map or show it in a window.
-        :return:
         """
 
         ''' Label the units '''
@@ -157,7 +157,6 @@ class SOM:
                 y_coord = float(math.floor(unit_index / self._map_width))
                 plt.annotate(label_print, (x_coord, y_coord))
 
-
         plt.xlim((-1, self._map_width))
         plt.ylim((-1, self._map_width))
         plt.title("Topological mapping to {}x{} grid with respect to {}"
@@ -171,5 +170,3 @@ class SOM:
             plt.savefig("results/{}".format(now_str + '.png'), dpi=dpi, bbox_inches='tight')
         else:
             plt.show()
-
-        return
