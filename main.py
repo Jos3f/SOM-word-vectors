@@ -59,10 +59,10 @@ if __name__ == '__main__':
     som = SOM(data, args.grid_width)
 
     '''Train SOM'''
-    som.train(epochs=args.epochs, start=args.neighborhood_size, learningRate=args.learning_rate)
+    som.train(epochs=args.epochs, start=args.neighborhood_size, learning_rate=args.learning_rate)
 
     '''Visualize'''
-    som.plotMap(data, np.arange(len(i2w)), i2w, "word vector", method="u2d", savefile=True)
+    som.plot_map(np.arange(len(i2w)), i2w, "word vector", method="u2d", save_file=True)
 
     print("Done")
 
