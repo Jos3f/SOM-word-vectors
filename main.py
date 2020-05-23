@@ -1,4 +1,5 @@
 import numpy as np
+import argparse
 import pandas as pd
 import csv
 import matplotlib.pyplot as plt
@@ -16,20 +17,34 @@ class WordVectors:
 
     def get_vectors(self, words):
         words = [x.lower() for x in words]
-        return self.words.loc[words]
+        return self.words.loc[self.words.index.intersection(words)]
 
 
-def main():
-    """Main function"""
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Embedding representation with SOM')
+    parser.add_argument('-f', '--file', type=str, help='A textual file containing word vectors',
+                        default='data/glove.6B.50d.txt')
+    parser.add_argument('-mcwf', '--most-common-words-file', type=str,
+                        help='A textual file containing a list of the most common words '
+                             'or the words we wish to include in the SOM',
+                        default='data/most_frequent_words/google-10000-english.txt')
+    parser.add_argument('-e', '--epochs', default=100, type=int, help='Number of epochs in SOM algorithm')
+    parser.add_argument('-gw', '--grid-width', default=10, type=int, help='Grid width of the map in the SOM algorithm')
+    parser.add_argument('-sn', '--neighborhood-size', default=10, type=int, help='Initial neighborhood size in SOM algorithm')
+    parser.add_argument('-ds', '--data-size', default=200, type=int, help='Number of data points to include')
+    parser.add_argument('-lr', '--learning-rate', default=0.2, type=float, help='Learning rate in SOM algorithm')
+    parser.add_argument('-lu', '--label-unit', default='u2d', type=str, choices=['d2u', 'd2u'],
+                        help='Method for labeling the units')
+    args = parser.parse_args()
 
     '''Load word vectors'''
-    print("Reading data")
-    filename = 'data/glove.6B.50d.txt'
+    filename = args.file
+    print("Reading data: {}".format(filename))
     word_vectors = WordVectors(filename)
 
     '''Identify the n most frequent words in the English language'''
-    n = 500  # Number of words to load
-    filename_word_frequency = 'data/most_frequent_words/google-10000-english.txt'
+    n = args.data_size  # Number of words to load
+    filename_word_frequency = args.most_common_words_file
     word_frequency = pd.read_csv(filename_word_frequency, sep=" ", header=None)
     most_frequent = word_frequency[:n]
 
@@ -41,19 +56,13 @@ def main():
     i2w = most_frequent_vectors.index.to_list()
 
     '''Initialize SOM'''
-
-
-    som = SOM(data, 20)
+    som = SOM(data, args.grid_width)
 
     '''Train SOM'''
-    som.train(epochs=500, start=20, learningRate=0.2)
+    som.train(epochs=args.epochs, start=args.neighborhood_size, learningRate=args.learning_rate)
 
     '''Visualize'''
     som.plotMap(data, np.arange(len(i2w)), i2w, "word vector", method="u2d")
 
     print("Done")
-    return
 
-
-if __name__ == '__main__':
-    main()
