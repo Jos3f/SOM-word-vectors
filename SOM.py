@@ -25,23 +25,25 @@ class SOM:
         self._map_width = map_width
         self._unit_weights = normalize(np.random.uniform(0, 1, (self._nUnits, data.shape[1])), norm="l2")
 
-    def train(self, epochs=100, start=None, learning_rate=0.2):
+    def train(self, epochs=100, start_range=None, learning_rate=0.2):
         """
         Train the units in our map
-        :param epochs:
-        :param start:
-        :param learning_rate:
+        :param epochs: Training epochs
+        :param start_range: The neighbourhood range of the map during training. The range is calculated
+        using manhattan distance. This parameter determines the size of the neighbourhood. If this is
+        None, then the default start range is the width of the 2D map.
+        :param learning_rate: Learning rate when updating our weights
         :return:
         """
 
-        '''Aet up an exponentially decreasing neighbourhood size'''
-        if start is None:
-            start = self._map_width
+        '''Create an exponentially decreasing neighbourhood size'''
+        if start_range is None:
+            start_range = self._map_width
 
         exponents = np.arange(epochs + 1)
         end_neighborhood = 0.5
         neighbour_distances = (
-            np.floor(start * ((end_neighborhood / start) ** (1 / exponents[-1])) ** exponents)).astype(int)
+            np.floor(start_range * ((end_neighborhood / start_range) ** (1 / exponents[-1])) ** exponents)).astype(int)
 
         '''Start training'''
         for epoch in tqdm(range(len(neighbour_distances))):
