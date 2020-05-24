@@ -2,20 +2,32 @@ import numpy as np
 import argparse
 import pandas as pd
 import csv
-import matplotlib.pyplot as plt
+
 from SOM import SOM
 from sklearn.preprocessing import normalize
 
 
 class WordVectors:
+    """
+    Class for loading our word vectors accessing them
+    """
+
     words = None
 
     def __init__(self, glove_data_file):
+        """
+        Initialize by reading data file and storing the pre-trained word vectors in a dataframe
+        :param glove_data_file:
+        """
         self.words = pd.read_csv(glove_data_file, sep=" ", index_col=0, header=None, quoting=csv.QUOTE_NONE,
                                  na_values=None, keep_default_na=False)
-        return
 
     def get_vectors(self, words):
+        """
+        Get requested word vectors
+        :param words: List of the words we want word vectors of
+        :return: Word vectors of the requested words (if they exist)
+        """
         words = [x.lower() for x in words]
         return self.words.loc[self.words.index.intersection(words)]
 
@@ -48,8 +60,7 @@ if __name__ == '__main__':
     word_frequency = pd.read_csv(filename_word_frequency, sep=" ", header=None)
     most_frequent = word_frequency[:n]
 
-    t = most_frequent.values.T[0]
-    most_frequent_vectors = word_vectors.get_vectors(t)
+    most_frequent_vectors = word_vectors.get_vectors(most_frequent.values.T[0])
 
     data = most_frequent_vectors.to_numpy()
     # data = normalize(data, norm="l2")
@@ -63,6 +74,7 @@ if __name__ == '__main__':
 
     '''Visualize'''
     som.plot_map(np.arange(len(i2w)), i2w, "word vector", method="u2d", save_file=True)
+    som.plot_map(np.arange(len(i2w)), i2w, "word vector", method="d2u", save_file=True)
 
     print("Done")
 
