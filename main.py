@@ -42,7 +42,9 @@ if __name__ == '__main__':
                         default='data/most_frequent_words/google-10000-english.txt')
     parser.add_argument('-e', '--epochs', default=100, type=int, help='Number of epochs in SOM algorithm')
     parser.add_argument('-gw', '--grid-width', default=10, type=int, help='Grid width of the map in the SOM algorithm')
-    parser.add_argument('-sn', '--neighborhood-size', default=10, type=int, help='Initial neighborhood size in SOM algorithm')
+    parser.add_argument('-nr', '--neighborhood-range', default=10, type=int,
+                        help='Determined the initial neighborhood size in SOM algorithm. This includes all '
+                             'neighbours with a manhattan distance of ns from the focus unit')
     parser.add_argument('-ds', '--data-size', default=200, type=int, help='Number of data points to include')
     parser.add_argument('-lr', '--learning-rate', default=0.2, type=float, help='Learning rate in SOM algorithm')
     parser.add_argument('-lu', '--label-unit', default='u2d', type=str, choices=['d2u', 'u2d'],
@@ -70,11 +72,10 @@ if __name__ == '__main__':
     som = SOM(data, args.grid_width)
 
     '''Train SOM'''
-    som.train(epochs=args.epochs, start=args.neighborhood_size, learning_rate=args.learning_rate)
+    som.train(epochs=args.epochs, start_range=args.neighborhood_range, learning_rate=args.learning_rate)
 
     '''Visualize'''
-    som.plot_map(np.arange(len(i2w)), i2w, "word vector", method="u2d", save_file=True)
-    som.plot_map(np.arange(len(i2w)), i2w, "word vector", method="d2u", save_file=True)
+    som.plot_map(np.arange(len(i2w)), i2w, "word vector", method=args.label_unit, save_file=True)
 
     print("Done")
 
