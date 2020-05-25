@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-from sklearn.preprocessing import normalize
 from tqdm import tqdm
 from datetime import datetime
 
@@ -23,7 +22,6 @@ class SOM:
         self._data = data
         self._nUnits = map_width ** 2
         self._map_width = map_width
-        #self._unit_weights = normalize(np.random.uniform(0, 1, (self._nUnits, data.shape[1])), norm="l2")
         self._unit_weights = np.random.normal(size=(self._nUnits, data.shape[1]))
 
     def train(self, epochs=100, start_range=None, learning_rate=0.2):
