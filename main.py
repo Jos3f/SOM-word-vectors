@@ -39,7 +39,7 @@ if __name__ == '__main__':
     parser.add_argument('-mcwf', '--most-common-words-file', type=str,
                         help='A textual file containing a list of the most common words '
                              'or the words we wish to include in the SOM',
-                        default='data/most_frequent_words/google-10000-english.txt')
+                        default='data/most_frequent_words/google-10000-english-no-swears.txt')
     parser.add_argument('-e', '--epochs', default=100, type=int, help='Number of epochs in SOM algorithm')
     parser.add_argument('-gw', '--grid-width', default=10, type=int, help='Grid width of the map in the SOM algorithm')
     parser.add_argument('-nr', '--neighborhood-range', default=10, type=int,
@@ -65,7 +65,7 @@ if __name__ == '__main__':
     most_frequent_vectors = word_vectors.get_vectors(most_frequent.values.T[0])
 
     data = most_frequent_vectors.to_numpy()
-    # data = normalize(data, norm="l2")
+    data = normalize(data, norm="l2")
     i2w = most_frequent_vectors.index.to_list()
 
     '''Initialize SOM'''
@@ -78,4 +78,3 @@ if __name__ == '__main__':
     som.plot_map(np.arange(len(i2w)), i2w, "word vector", method=args.label_unit, save_file=True)
 
     print("Done")
-
