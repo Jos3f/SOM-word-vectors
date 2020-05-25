@@ -28,6 +28,6 @@ The resulting plot can be seen here:
 
 ![alt text](results/Glove.6B.300d40_u2d.png "Topological map of words in the English language")
 
-Click [here](results/Glove.6B.300d40_u2d.png "Topological map of words in the English language") to open the picture in new tab. 
+Click [here](results/Glove.6B.300d40_u2d.png?raw=true "Topological map of words in the English language") to open the picture in new tab. 
 
 As seen on the results, similar words are positioned close to each other. 
