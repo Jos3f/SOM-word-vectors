@@ -31,3 +31,27 @@ The resulting plot can be seen here:
 Click [here](results/Glove.6B.300d40_u2d.png?raw=true "Topological map of words in the English language") to view the picture. 
 
 As seen on the results, similar words are positioned close to each other. 
+
+#### The Swedish language
+
+A similar experiment was done for the Swedish language as for the English language. The Swedish word vectors are 300-dimensional and are trained by [Facebook Research](https://github.com/facebookresearch).
+The word vectors can be found on their [github repository](https://github.com/facebookresearch/fastText/blob/master/docs/crawl-vectors.md) and are licenced under  the [*Creative Commons Attribution-Share-Alike License 3.0*](https://creativecommons.org/licenses/by-sa/3.0/).
+The 600 most frequently used words in the Swedish language were included and the source I used to identify them can be found [here](https://rl.se/tusen.html).
+The units/vertices in the grid were labelled to the label that the closest data point has (Euclidean distance). 
+
+Training Parameters used:
+
+|Parameter|value|
+|-----|----|
+|Words|600|
+|Epochs|500|
+|Learning rate| 0.2|
+|Unit initialisation|Gaussian(0,1)|
+|Grid size|20x20|
+|Initial neighborhood range| 20 (Manhattan distance)|
+
+![alt text](results/swedish.300d20_d2u.png "Topological map of words in the Swedish language")
+
+Click [here](results/swedish.300d20_d2u.png?raw=true "Topological map of words in the Swedish language") to view the picture. 
+
+As seen on the results, similar words are positioned close to each other. 
